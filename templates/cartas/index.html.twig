@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cartas index{% endblock %}
+
+{% block body %}
+    <h1>Cartas index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Ataque</th>
+                <th>Defensa</th>
+                <th>Descripcion</th>
+                <th>Foto</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for carta in cartas %}
+            <tr>
+                <td>{{ carta.id }}</td>
+                <td>{{ carta.nombre }}</td>
+                <td>{{ carta.ataque }}</td>
+                <td>{{ carta.defensa }}</td>
+                <td>{{ carta.descripcion }}</td>
+                <td>{{ carta.foto }}</td>
+                <td>
+                    <a href="{{ path('cartas_show', {'id': carta.id}) }}">show</a>
+                    <a href="{{ path('cartas_edit', {'id': carta.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('cartas_new') }}">Create new</a>
+{% endblock %}
