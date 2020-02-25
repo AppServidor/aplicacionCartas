@@ -20,6 +20,7 @@ class CartasController extends AbstractController
      */
     public function index(CartasRepository $cartasRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLES_ADMIN');
         return $this->render('cartas/index.html.twig', [
             'cartas' => $cartasRepository->findAll(),
         ]);

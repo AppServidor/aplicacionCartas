@@ -14,10 +14,11 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/registroUser", name="app_register")
+     * @Route("/registroUser", name="registro_user")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        
         $user = new Usuarios();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -49,6 +50,7 @@ class RegistrationController extends AbstractController
      */
     public function registerAdmin(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $this->denyAccessUnlessGranted('ROLES_ADMIN');
         $user = new Usuarios();
         $form = $this->createForm(AdminType::class, $user);
         $form->handleRequest($request);

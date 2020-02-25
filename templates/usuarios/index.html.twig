@@ -21,7 +21,6 @@
                 <td>{{ usuario.id }}</td>
                 <td>{{ usuario.email }}</td>
                 <td>{{ usuario.roles ? usuario.roles|json_encode : '' }}</td>
-                <td>{{ usuario.password }}</td>
                 <td>
                     <a href="{{ path('usuarios_show', {'id': usuario.id}) }}">show</a>
                     <a href="{{ path('usuarios_edit', {'id': usuario.id}) }}">edit</a>
@@ -35,5 +34,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('usuarios_new') }}">Create new</a>
+    <a href="{{ path('registro_user') }}">Crear nuevo usuario</a>
+    <a href="{{ path('registro_admin') }}">Crear nuevo administrador</a>
 {% endblock %}
