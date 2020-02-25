@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Cartas index</h1>
-
+    <input type="text" id="buscador"/>
     <table class="table">
         <thead>
             <tr>
@@ -40,4 +40,9 @@
     </table>
 
     <a href="{{ path('cartas_new') }}">Create new</a>
+    {% block javascripts %}
+        <script src={{ asset ("js/funcionesAJAX.js")}}></script>
+        <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    {% endblock %}
 {% endblock %}

@@ -19,6 +19,16 @@ class CartasRepository extends ServiceEntityRepository
         parent::__construct($registry, Cartas::class);
     }
 
+    public function busquedaAjax($letras)
+    {
+        return $this->createQueryBuilder('ajax')
+            ->andWhere('ajax.nombre like :val')
+            ->setParameter('val', '%'.$letras.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     // /**
     //  * @return Cartas[] Returns an array of Cartas objects
     //  */

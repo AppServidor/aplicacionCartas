@@ -6,6 +6,7 @@ use App\Entity\Cartas;
 use App\Form\CartasType;
 use App\Repository\CartasRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -106,5 +107,36 @@ class CartasController extends AbstractController
         }
 
         return $this->redirectToRoute('cartas_index');
+    }
+    /**
+     * @Route("/busqueda", name="busqueda", options={"exposed"=true})
+     */
+    public function buscador(Request $request){
+
+        if($request->isXmlHttpRequest()){
+            $entityManager = $this->getDoctrine()->getManager();
+            $datos = $request->get('datos');
+            $cartas = $entityManager->getRepository(Cartas::class)->busquedaAjax($datos); 
+
+            if(!$cartas){
+                $resp = "No hay cartas";
+            }else{
+                $resp=[];
+                $campo=[];
+
+                foreach ($cartas as $clave => $resultados){
+                    $campo = [
+                        'id' => $resultados->getId(),
+                        'nombre' => $resultados->getNombre(),
+                        'ataque' => $resultados->getAtaque(),
+                        'defensa' => $resultados->getDefensa(),
+                        'descripcion' => $resultados->getDescripcion(),
+                        'foto' => $resultados->getFoto()
+                    ];
+                    $resp[$clave] = $campo;
+                }
+            }
+            return new JsonResponse(['cartas' => $resp]);
+        }
     }
 }
