@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Usuarios;
 use App\Entity\Ciudad;
 use App\Entity\Cartas;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -27,10 +28,8 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'required' => false,
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Please enter a password',
-                    ]),
                     new Length([
                         'min' => 6,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
@@ -38,6 +37,12 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+            ])
+            ->add('foto', FileType::class, [
+                'label' => 'Foto',
+                'data_class' => null,
+                'mapped' => false,
+                'required' => false
             ])
             ->add('cartas', EntityType::class, [
                 'class' => Cartas::class,

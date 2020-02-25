@@ -25,6 +25,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
+            $user->setFoto($form->get('foto')->getData());
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
@@ -35,10 +36,10 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
+            self::renamePic($form->get('foto')->getData(), $user);
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('usuarios_index');
+            return $this->redirectToRoute('usuarios_home');
         }
 
         return $this->render('registration/registroUsuarios.html.twig', [
@@ -77,5 +78,16 @@ class RegistrationController extends AbstractController
         return $this->render('registration/registroAdmin.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    private function renamePic($imagen, $user){
+
+        $nombreImg = $user->getId().'.'.$imagen->guessExtension();
+        $imagen->move('img/usuarios',$nombreImg);
+
+        $entityManager=$this->getDoctrine()->getManager();
+        $user->setFoto($nombreImg);
+        $entityManager->flush();
+
     }
 }

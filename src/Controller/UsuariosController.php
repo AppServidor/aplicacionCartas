@@ -28,29 +28,6 @@ class UsuariosController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="usuarios_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $usuario = new Usuarios();
-        $form = $this->createForm(RegistrationFormType::class, $usuario);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($usuario);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('usuarios_index');
-        }
-
-        return $this->render('usuarios/new.html.twig', [
-            'usuario' => $usuario,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}", name="usuarios_show", methods={"GET"})
      */
     public function show(Usuarios $usuario): Response
@@ -69,7 +46,19 @@ class UsuariosController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+            if(!is_null($form->get('foto')->getData()||!is_null($form->get('plainPassword')->getData()))){
+                if(!is_null($form->get('foto')->getData())){
+                    self::renamePic($form->get('foto')->getData(),$usuario);
+                }
+                if(!is_null($form->get('plainPassword')->getData())){
+                    $usuario->setPassword($form->get('plainPassword')->getData());
+                    $this->getDoctrine()->getManager()->flush();
+                }                
+            }else{
+                $this->getDoctrine()->getManager()->flush();
+            }
+            
 
             return $this->redirectToRoute('usuarios_index');
         }
@@ -92,5 +81,15 @@ class UsuariosController extends AbstractController
         }
 
         return $this->redirectToRoute('usuarios_index');
+    }
+    private function renamePic($imagen, $user){
+
+        $nombreImg = $user->getId().'.'.$imagen->guessExtension();
+        $imagen->move('img/usuarios',$nombreImg);
+
+        $entityManager=$this->getDoctrine()->getManager();
+        $user->setFoto($nombreImg);
+        $entityManager->flush();
+
     }
 }

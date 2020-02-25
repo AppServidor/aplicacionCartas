@@ -48,6 +48,11 @@ class Usuarios implements UserInterface
      */
     private $ciudad;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $foto;
+
     public function __construct()
     {
         $this->cartas = new ArrayCollection();
@@ -165,6 +170,18 @@ class Usuarios implements UserInterface
     public function setCiudad(?Ciudad $ciudad): self
     {
         $this->ciudad = $ciudad;
+
+        return $this;
+    }
+
+    public function getFoto(): ?string
+    {
+        return $this->foto;
+    }
+
+    public function setFoto(?string $foto): self
+    {
+        $this->foto = $foto;
 
         return $this;
     }

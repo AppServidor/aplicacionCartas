@@ -8,8 +8,11 @@
     {{ form_start(registrationForm) }}
         {{ form_row(registrationForm.email) }}
         {{ form_row(registrationForm.ciudad) }}
-        {{ form_row(registrationForm.plainPassword) }}
+        {{ form_row(registrationForm.plainPassword, {'attr':{'class':'pass'}}) }}
         
-        <button class="btn">Register</button>
+        <button class="btn" id="boton">Register</button>
     {{ form_end(registrationForm) }}
+    {% block javascripts %}
+        <script src={{ asset ("js/funciones.js")}}></script>
+    {% endblock %}
 {% endblock %}
