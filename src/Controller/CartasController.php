@@ -109,15 +109,15 @@ class CartasController extends AbstractController
         return $this->redirectToRoute('cartas_index');
     }
     /**
-     * @Route("/busqueda", name="busqueda", options={"exposed"=true})
+     * @Route("/busqueda",options={"expose"=true}, name="busqueda" )
      */
     public function buscador(Request $request){
-
+  $resp ="";
         if($request->isXmlHttpRequest()){
             $entityManager = $this->getDoctrine()->getManager();
             $datos = $request->get('datos');
             $cartas = $entityManager->getRepository(Cartas::class)->busquedaAjax($datos); 
-
+          
             if(!$cartas){
                 $resp = "No hay cartas";
             }else{
@@ -136,7 +136,7 @@ class CartasController extends AbstractController
                     $resp[$clave] = $campo;
                 }
             }
-            return new JsonResponse(['cartas' => $resp]);
-        }
+           
+        } return new JsonResponse(['cartas' => $resp]);
     }
 }
