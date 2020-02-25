@@ -20,7 +20,7 @@ class CiudadController extends AbstractController
      */
     public function index(CiudadRepository $ciudadRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLES_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('ciudad/index.html.twig', [
             'ciudads' => $ciudadRepository->findAll(),
         ]);

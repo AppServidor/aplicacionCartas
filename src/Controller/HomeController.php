@@ -22,7 +22,7 @@ class HomeController extends AbstractController
      */
     public function homeUser()
     {
-        $this->denyAccessUnlessGranted('ROLES_USER');
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('home/homeUser.html.twig');
     }
 }

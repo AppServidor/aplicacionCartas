@@ -50,7 +50,8 @@ class RegistrationController extends AbstractController
      */
     public function registerAdmin(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $this->denyAccessUnlessGranted('ROLES_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $user = new Usuarios();
         $form = $this->createForm(AdminType::class, $user);
         $form->handleRequest($request);
@@ -64,7 +65,7 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            $user->setRoles(array('ROLES_ADMIN'));
+            $user->setRoles(array('ROLE_ADMIN'));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
