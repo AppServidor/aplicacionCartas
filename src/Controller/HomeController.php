@@ -16,4 +16,13 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    /**
+     * @Route("/homeUser", name="usuarios_home", methods={"GET"})
+     */
+    public function homeUser()
+    {
+        $this->denyAccessUnlessGranted('ROLE_USER');
+        return $this->render('home/homeUser.html.twig');
+    }
 }

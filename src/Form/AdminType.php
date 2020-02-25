@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Usuarios;
+use App\Entity\Ciudad;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +18,10 @@ class AdminType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('ciudad')
+            ->add('ciudad', EntityType::class, [
+                'class' => Ciudad::class,
+                'choice_label' => 'nombre'
+            ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
