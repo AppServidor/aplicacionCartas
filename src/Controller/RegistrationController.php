@@ -54,7 +54,8 @@ class RegistrationController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         
         $user = new Usuarios();
-        $form = $this->createForm(AdminType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
+       
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

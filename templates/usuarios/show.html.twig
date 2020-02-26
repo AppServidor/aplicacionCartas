@@ -20,12 +20,9 @@
                 <td>{{ usuario.roles ? usuario.roles|json_encode : '' }}</td>
             </tr>
             <tr>
-                <th>Password</th>
-                <td>{{ usuario.password }}</td>
-            </tr>
-            <tr>
                 <th>Foto</th>
-                <td>{{ usuario.foto }}</td>
+                <td> <img src="{{asset('img/usuarios/'~usuario.foto )}}"</td>
+                {{usuario.foto}}
             </tr>            
         </tbody>
     </table>
