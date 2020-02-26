@@ -80,6 +80,7 @@ class CartasController extends AbstractController
      */
     public function edit(Request $request, Cartas $carta): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(CartasType::class, $carta);
         $form->handleRequest($request);
 
