@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
+ * @method Cartas[]    busquedaAjax($letras)
  * @method Cartas|null find($id, $lockMode = null, $lockVersion = null)
  * @method Cartas|null findOneBy(array $criteria, array $orderBy = null)
  * @method Cartas[]    findAll()
@@ -19,10 +20,11 @@ class CartasRepository extends ServiceEntityRepository
         parent::__construct($registry, Cartas::class);
     }
 
+
     public function busquedaAjax($letras)
     {
         return $this->createQueryBuilder('ajax')
-            ->andWhere('ajax.nombre like :val')
+            ->andWhere('ajax.nombre LIKE :val')
             ->setParameter('val', '%'.$letras.'%')
             ->getQuery()
             ->getResult()

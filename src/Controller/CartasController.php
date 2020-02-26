@@ -44,7 +44,7 @@ class CartasController extends AbstractController
             $entityManager->persist($carta);
             $entityManager->flush();
             self::renamePic($carta, $form->get('foto')->getData());
-            
+
 
             return $this->redirectToRoute('cartas_index');
         }
@@ -55,13 +55,14 @@ class CartasController extends AbstractController
         ]);
     }
 
-    private function renamePic($carta, $imagen){
+    private function renamePic($carta, $imagen)
+    {
 
-        $nombreImg = $carta->getId().'.'.$imagen->guessExtension();
+        $nombreImg = $carta->getId() . '.' . $imagen->guessExtension();
 
         $imagen->move('img/cartas', $nombreImg);
         $carta->setFoto($nombreImg);
-        $entityManager =$this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
     }
 
@@ -101,7 +102,7 @@ class CartasController extends AbstractController
      */
     public function delete(Request $request, Cartas $carta): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$carta->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $carta->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($carta);
             $entityManager->flush();
@@ -112,32 +113,33 @@ class CartasController extends AbstractController
     /**
      * @Route("/busqueda",options={"expose"=true}, name="busqueda" )
      */
-    public function buscador(Request $request){
-  $resp ="";
-        if($request->isXmlHttpRequest()){
+    public function buscador(Request $request)
+    {
+        $resp = "";
+        if ($request->isXmlHttpRequest()) {
+            
             $entityManager = $this->getDoctrine()->getManager();
             $datos = $request->get('datos');
-            $cartas = $entityManager->getRepository(Cartas::class)->busquedaAjax($datos); 
-          
-            if(!$cartas){
-                $resp = "No hay cartas";
-            }else{
-                $resp=[];
-                $campo=[];
+            $cartas = $entityManager->getRepository(Cartas::class)->busquedaAjax($datos);
+        }
+        if (!$cartas) {
+            $resp = "No hay cartas";
+        } else {
+            $resp = [];
+            $campo = [];
 
-                foreach ($cartas as $clave => $resultados){
-                    $campo = [
-                        'id' => $resultados->getId(),
-                        'nombre' => $resultados->getNombre(),
-                        'ataque' => $resultados->getAtaque(),
-                        'defensa' => $resultados->getDefensa(),
-                        'descripcion' => $resultados->getDescripcion(),
-                        'foto' => $resultados->getFoto()
-                    ];
-                    $resp[$clave] = $campo;
-                }
+            foreach ($cartas as $clave => $resultados) {
+                $campo = [
+                    'id' => $resultados->getId(),
+                    'nombre' => $resultados->getNombre(),
+                    'ataque' => $resultados->getAtaque(),
+                    'defensa' => $resultados->getDefensa(),
+                    'descripcion' => $resultados->getDescripcion(),
+                    'foto' => $resultados->getFoto()
+                ];
+                $resp[$clave] = $campo;
             }
-           
-        } return new JsonResponse(['cartas' => $resp]);
+        }
+        return new JsonResponse(['cartas' => $resp]);
     }
 }
