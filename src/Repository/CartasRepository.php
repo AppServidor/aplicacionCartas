@@ -23,12 +23,12 @@ class CartasRepository extends ServiceEntityRepository
 
     public function busquedaAjax($letras)
     {
-        return $this->createQueryBuilder('ajax')
-            ->andWhere('ajax.nombre LIKE :val')
-            ->setParameter('val', '%'.$letras.'%')
-            ->getQuery()
-            ->getResult()
-            ;
+        return $this->createQueryBuilder('a')
+        ->andWhere('a.nombre LIKE :val')
+        ->setParameter('val','%'.$letras.'%') 
+         ->getQuery()
+         ->getResult()
+         ;
     }
 
     // /**

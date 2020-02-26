@@ -21,7 +21,7 @@ class CartasController extends AbstractController
      */
     public function index(CartasRepository $cartasRepository): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('cartas/index.html.twig', [
             'cartas' => $cartasRepository->findAll(),
         ]);
@@ -60,7 +60,7 @@ class CartasController extends AbstractController
 
         $nombreImg = $carta->getId() . '.' . $imagen->guessExtension();
 
-        $imagen->move('img/cartas', $nombreImg);
+        $imagen->move($this->getParameter('imagen_directory'), $nombreImg);
         $carta->setFoto($nombreImg);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->flush();
@@ -114,21 +114,21 @@ class CartasController extends AbstractController
      * @Route("/busqueda",options={"expose"=true}, name="busqueda" )
      */
     public function buscador(Request $request)
-    {
-        $resp = "";
-        if ($request->isXmlHttpRequest()) {
-            
-            $entityManager = $this->getDoctrine()->getManager();
-            $datos = $request->get('datos');
-            $cartas = $entityManager->getRepository(Cartas::class)->busquedaAjax($datos);
-        }
-        if (!$cartas) {
-            $resp = "No hay cartas";
+    {     
+        if ($request->isXmlHttpRequest()){
+            $em = $this->getDoctrine()->getManager();
+            $busqueda = $request->get('value');
+            $cartas = $em->getRepository(Cartas::class)->busquedaAjax($busqueda);
+           } else {
+               throw new Exception("Error de acceso");
+           }
+           if (!$cartas){
+            $resp ="No hay cartas";
         } else {
-            $resp = [];
-            $campo = [];
-
-            foreach ($cartas as $clave => $resultados) {
+            $resp=[];
+            $campo=[];
+            foreach ($cartas  as $clave => $resultados){
+             
                 $campo = [
                     'id' => $resultados->getId(),
                     'nombre' => $resultados->getNombre(),
